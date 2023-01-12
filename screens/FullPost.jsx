@@ -1,6 +1,6 @@
 import React from "react";
 import styled from 'styled-components/native'
-import {ActivityIndicator, Alert, Text, View} from "react-native";
+import { Alert, View} from "react-native";
 import axios from "axios";
 import {Loading} from "../components/Loading";
 
@@ -16,24 +16,29 @@ font-size: 18px;
   line-height: 24px;
 `;
 
-const FullPost = () =>{
-  const [bvgisLoading, setIsLoading] = useState(true)
-  const [data,setData] = useState();
+export const FullPost = ({ route, navigation }) =>{
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [data,setData] = React.useState();
+  const {id, title } = route.params;
 
 React.useEffect(()=>{
-  setIsLoading(true);
+  navigation.setOptions({
+    title,
+  });
   axios
-    .get('https://633b271b471b8c39557d8047.mockapi.io/cards')
+    .get('https://633b271b471b8c39557d8047.mockapi.io/cards/' + id)
     .then(({data})=>{
       setData(data);
     })
     .catch( err =>{
       console.log(err);
       Alert.alert('ошибка получения')
-    }).finally(()=>{
+    })
+    .finally(()=>{
     setIsLoading(false);
+    })
   },[]);
-})
+
 
   if (isLoading){
     return(
@@ -43,12 +48,13 @@ React.useEffect(()=>{
 
 
   return(
-    <View style = {{padding: 20}}>
-      <PostImage/>
-      <PostText/>
+    <View style = {{ padding: 20}}>
+      <PostImage source={{ uri: data.imageURL }}/>
+      <PostText>
+        {data.text}
+      </PostText>
 
     </View>
   )
 }
 
-export default FullPost

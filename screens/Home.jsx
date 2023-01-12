@@ -7,7 +7,7 @@ import {FlatList} from "react-native";
 
 
 
-export const Home = () => {
+export const Home = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [items,setItems] = useState();
 
@@ -45,11 +45,11 @@ export const Home = () => {
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchPosts}/>}
         data={items}
         renderItem={({item})=>(
-          <TouchableOpacity onPress={()=>alert('123')}>
+          <TouchableOpacity onPress={()=>navigation.navigate('FullPost', {id: item.id, title: item.title})}>
             <Post
               title={item.title}
               createAt={item.createAt}
-              imageUrl={item.imageURL}
+              imageURL={item.imageURL}
             />
           </TouchableOpacity>
 

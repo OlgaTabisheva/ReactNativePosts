@@ -1,4 +1,3 @@
-import {Text} from "react-native";
 import styled from 'styled-components/native'
 
 const PostView = styled.View`
@@ -32,14 +31,19 @@ const PostDate  = styled.Text`
   margin-top: 2px;
 `;
 
+const truncateTitle = (str)=> {
+if (str.length>=50){
+  return str.substring(0, 50) + '...';
+}
+return str
+}
 
-
-export const Post=({title,imageUrl,createAt})=>{
+export const Post=({title,imageURL,createAt})=>{
   return  <PostView>
-    <PostImage source={{uri:imageUrl}}/>
+    <PostImage source={{uri:imageURL}}/>
     <PostDetails>
-      <PostTitle>{title}</PostTitle>
-      <PostDate>{createAt}</PostDate>
+      <PostTitle>{truncateTitle(title)}</PostTitle>
+      <PostDate>{new Date(createAt).toLocaleDateString()}</PostDate>
     </PostDetails>
   </PostView>
 }
